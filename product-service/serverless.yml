@@ -34,7 +34,9 @@ package:
   individually: true
 
 plugins:
+  - serverless-auto-swagger
   - serverless-webpack
+
 # you can overwrite defaults here
 #  stage: dev
 #  region: us-east-1
