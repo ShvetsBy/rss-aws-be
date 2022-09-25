@@ -1,4 +1,4 @@
 "use strict";
 
-export { getProducts } from "./handlers/getProducts";
+export { getProductsList } from "./handlers/getProductsList";
 export { getProductById } from "./handlers/getProductById";

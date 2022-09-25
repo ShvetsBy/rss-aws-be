@@ -71,7 +71,7 @@ plugins:
 
 functions:
   getProducts:
-    handler: handler.getProducts
+    handler: handler.getProductsList
     events:
       - http:
           path: /products
