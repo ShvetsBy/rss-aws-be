@@ -1,4 +1,3 @@
-import products from "../DB/products";
 var AWS = require("aws-sdk");
 
 var ddb = new AWS.DynamoDB({ apiVersion: "2012-08-10" });
@@ -10,7 +9,7 @@ var params = {
 async function getItems() {
   try {
     const data = await ddb.scan(params).promise();
-    // .then((res) => res.Items);
+
     return data;
   } catch (err) {
     return JSON.stringify(err.message);

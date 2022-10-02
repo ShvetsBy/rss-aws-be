@@ -30,9 +30,9 @@ functions:
   getProduct:
     handler: handler.getProductById
     environment:
-      TABLE_NAME: stocks
+      TABLE_NAME: products
     events:
-      - http:
+      - httpApi:
           path: /products/{id}
           method: get
-          cors: true
+          # cors: true

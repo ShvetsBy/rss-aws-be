@@ -1,24 +1,39 @@
-// import products from "../DB/products";
+var AWS = require("aws-sdk");
+
+var ddb = new AWS.DynamoDB({ apiVersion: "2012-08-10" });
+
+async function getItem(itemId) {
+  try {
+    var params = {
+      TableName: process.env.TABLE_NAME,
+      KeyConditionExpression: "id = :id",
+      ExpressionAttributeValues: {
+        ":id": { S: itemId },
+      },
+    };
+
+    const data = await ddb.query(params).promise();
+    return data;
+  } catch (err) {
+    return JSON.stringify(err.message);
+  }
+}
 
 export const getProductById = async (event) => {
+  const { id } = event.pathParameters;
+
   try {
-    // const { id } = event.pathParameters;
-    // const product = products.find((item) => item.id === parseInt(id));
-    // if (!product) {
-    //   return {
-    //     statusCode: "404",
-    //     body: `Product with id#${id} are unavailiable`,
-    //   };
-    // }
-    // return {
-    //   statusCode: 200,
-    //   headers: {
-    //     "Access-Control-Allow-Origin": "*",
-    //     "Access-Control-Allow-Credentials": true,
-    //   },
-    //   body: JSON.stringify(product),
-    // };
-  } catch (e) {
-    console.log(e);
+    const data = await getItem(id);
+    return {
+      statusCode: 200,
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "*",
+      },
+      body: JSON.stringify(data),
+    };
+  } catch (err) {
+    return { err: "ept" };
   }
 };
