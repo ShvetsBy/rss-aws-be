@@ -10,6 +10,8 @@ AWS.config.update({ region: "eu-west-1" });
 // Create DynamoDB service object
 var ddb = new AWS.DynamoDB({ apiVersion: "2012-08-10" });
 
+var productTable = "products";
+
 // Add the four results for spades
 var params = {
   RequestItems: {
