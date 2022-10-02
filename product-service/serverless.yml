@@ -26,7 +26,6 @@ functions:
       - httpApi:
           path: /products
           method: get
-          # cors: true
   getProduct:
     handler: handler.getProductById
     environment:
@@ -35,4 +34,11 @@ functions:
       - httpApi:
           path: /products/{id}
           method: get
-          # cors: true
+  getStock:
+    handler: handler.getStock
+    environment:
+      TABLE_NAME: stocks
+    events:
+      - httpApi:
+          path: /stock
+          method: get
