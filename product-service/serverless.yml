@@ -23,10 +23,10 @@ functions:
     environment:
       TABLE_NAME: products
     events:
-      - http:
+      - httpApi:
           path: /products
           method: get
-          cors: true
+          # cors: true
   getProduct:
     handler: handler.getProductById
     environment:
