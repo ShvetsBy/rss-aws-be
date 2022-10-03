@@ -3,6 +3,13 @@ var AWS = require("aws-sdk");
 var ddb = new AWS.DynamoDB({ apiVersion: "2012-08-10" });
 
 async function getItem(itemId) {
+  if (!ddb) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ msg: "Connection Failed" }),
+    };
+  }
+
   try {
     var params = {
       TableName: process.env.TABLE_NAME,

@@ -42,3 +42,12 @@ functions:
       - httpApi:
           path: /stock
           method: get
+  postProduct:
+    handler: handler.putProduct
+    environment:
+      PRODUCTS_TABLE: products
+      STOCK_TABLE: stocks
+    events:
+      - httpApi:
+          path: /products
+          method: post

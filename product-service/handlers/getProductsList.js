@@ -7,6 +7,12 @@ var params = {
 };
 
 async function getItems() {
+  if (!ddb) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ msg: "Connection Failed" }),
+    };
+  }
   try {
     const data = await ddb.scan(params).promise();
 
