@@ -25,14 +25,20 @@ const getId = async () => {
       post(params);
     });
   } catch (err) {
-    console.error(err);
+    return {
+      statusCode: 500,
+      body: JSON.stringify(err.message),
+    };
   }
 };
 
 function post(params) {
   ddb.putItem(params, function (err, data) {
     if (err) {
-      console.log("Error", err);
+      return {
+        statusCode: 500,
+        body: JSON.stringify(err.message),
+      };
     } else {
       console.log("Success", data);
     }

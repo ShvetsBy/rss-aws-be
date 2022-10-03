@@ -45,7 +45,10 @@ export const putProduct = async (event) => {
         },
         function (err, data) {
           if (err) {
-            console.log("Error", err);
+            return {
+              statusCode: 500,
+              body: JSON.stringify(err.message),
+            };
           } else {
             console.log("Success", data);
           }
@@ -79,6 +82,9 @@ export const putProduct = async (event) => {
       body: JSON.stringify("Successfully added:" + product.title.S),
     };
   } catch (err) {
-    return err;
+    return {
+      statusCode: 500,
+      body: JSON.stringify(err.message),
+    };
   }
 };

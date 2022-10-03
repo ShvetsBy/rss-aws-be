@@ -17,7 +17,10 @@ async function getItems() {
     const data = await ddb.scan(params).promise();
     return data;
   } catch (err) {
-    return JSON.stringify(err.message);
+    return {
+      statusCode: 500,
+      body: JSON.stringify(err.message),
+    };
   }
 }
 
@@ -34,6 +37,9 @@ export const getStock = async (event) => {
       body: JSON.stringify(data),
     };
   } catch (err) {
-    return { err: "ept" };
+    return {
+      statusCode: 500,
+      body: JSON.stringify(err.message),
+    };
   }
 };
