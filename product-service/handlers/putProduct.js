@@ -26,12 +26,15 @@ export const putProduct = async (event) => {
       product_id: { S: id },
     };
     console.log(stock);
+
     if (
-      !product.hasOwnProperty("title") &&
-      !product.hasOwnProperty("description") &&
-      !product.hasOwnProperty("price") &&
-      !product.hasOwnProperty("count")
+      body.hasOwnProperty("title") &&
+      body.hasOwnProperty("description") &&
+      body.hasOwnProperty("price") &&
+      body.hasOwnProperty("count")
     ) {
+      console.log("product props are allright");
+    } else {
       return {
         statusCode: 400,
         body: JSON.stringify("product data is invalid"),
