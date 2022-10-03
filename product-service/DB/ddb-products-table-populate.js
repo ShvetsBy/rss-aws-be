@@ -211,7 +211,10 @@ post();
 function post() {
   ddb.batchWriteItem(params, function (err, data) {
     if (err) {
-      console.log("Error", err);
+      return {
+        statusCode: 500,
+        body: JSON.stringify(err.message),
+      };
     } else {
       console.log("Success", data);
     }

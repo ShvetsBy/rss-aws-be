@@ -12,6 +12,7 @@ export const putProduct = async (event) => {
   }
   try {
     const body = JSON.parse(event.body);
+
     const { count, ...rest } = body;
 
     const id = uuid.v4();
@@ -19,12 +20,12 @@ export const putProduct = async (event) => {
       ...rest,
       id: { S: id },
     };
-
+    console.log(product);
     const stock = {
       count,
       product_id: { S: id },
     };
-
+    console.log(stock);
     if (
       !product.hasOwnProperty("title") &&
       !product.hasOwnProperty("description") &&

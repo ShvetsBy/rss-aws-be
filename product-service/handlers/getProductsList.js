@@ -25,6 +25,7 @@ async function getItems() {
 export const getProductsList = async (event) => {
   try {
     const data = await getItems();
+    console.log(data);
     return {
       statusCode: 200,
       headers: {
@@ -35,6 +36,9 @@ export const getProductsList = async (event) => {
       body: JSON.stringify(data),
     };
   } catch (err) {
-    return { err: "ept" };
+    return {
+      statusCode: 500,
+      body: JSON.stringify(err.message),
+    };
   }
 };

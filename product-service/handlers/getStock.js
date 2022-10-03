@@ -27,6 +27,7 @@ async function getItems() {
 export const getStock = async (event) => {
   try {
     const data = await getItems();
+    console.log(data);
     return {
       statusCode: 200,
       headers: {

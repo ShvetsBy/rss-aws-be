@@ -31,9 +31,10 @@ async function getItem(itemId) {
 
 export const getProductById = async (event) => {
   const { id } = event.pathParameters;
-
+  console.log("id:" + id);
   try {
     const data = await getItem(id);
+    console.log(data);
     return {
       statusCode: 200,
       headers: {
