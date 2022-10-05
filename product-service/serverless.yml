@@ -22,7 +22,6 @@ functions:
     handler: handler.getProductsList
     environment:
       TABLE_NAME: products
-      STOCK_TABLE: stocks
     events:
       - httpApi:
           path: /products
@@ -34,6 +33,14 @@ functions:
     events:
       - httpApi:
           path: /products/{id}
+          method: get
+  getStock:
+    handler: handler.getStock
+    environment:
+      TABLE_NAME: stocks
+    events:
+      - httpApi:
+          path: /stock
           method: get
   postProduct:
     handler: handler.putProduct
