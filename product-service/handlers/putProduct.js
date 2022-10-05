@@ -12,7 +12,7 @@ export const putProduct = async (event) => {
   }
   try {
     const body = JSON.parse(event.body);
-
+    console.log(body);
     const { count, ...rest } = body;
 
     const id = uuid.v4();
@@ -25,7 +25,6 @@ export const putProduct = async (event) => {
       count,
       product_id: { S: id },
     };
-    console.log(stock);
 
     if (
       body.hasOwnProperty("title") &&
