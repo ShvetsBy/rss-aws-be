@@ -1,0 +1,26 @@
+service: import-service
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: dev
+  region: eu-west-1
+
+custom:
+  webpack:
+    includeModules: false
+
+package:
+  individually: true
+
+plugins:
+  - serverless-webpack
+
+functions:
+  importProductsFile:
+    handler: handler.importProductsFile
+    events:
+      - httpApi:
+          path: /import
+          method: get

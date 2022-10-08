@@ -12,7 +12,13 @@
     "license": "ISC",
     "homepage": "https://dq70geuqhiw7y.cloudfront.net/",
     "devDependencies": {
-        "jest": "^29.0.3",
-        "serverless-auto-swagger": "^2.8.2"
+        "serverless-auto-swagger": "^2.8.2",
+        "serverless-webpack": "^5.10.0",
+        "webpack": "^5.74.0"
+    },
+    "dependencies": {
+        "aws-sdk": "^2.1226.0",
+        "csv-parser": "^3.0.0",
+        "uuid": "^9.0.0"
     }
 }
