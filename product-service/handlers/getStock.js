@@ -2,24 +2,19 @@ var AWS = require("aws-sdk");
 
 var ddb = new AWS.DynamoDB({ apiVersion: "2012-08-10" });
 
-async function getItem(itemId) {
+var params = {
+  TableName: process.env.TABLE_NAME,
+};
+
+async function getItems() {
   if (!ddb) {
     return {
       statusCode: 500,
       body: JSON.stringify({ msg: "Connection Failed" }),
     };
   }
-
   try {
-    var params = {
-      TableName: process.env.TABLE_NAME,
-      KeyConditionExpression: "id = :id",
-      ExpressionAttributeValues: {
-        ":id": { S: itemId },
-      },
-    };
-
-    const data = await ddb.query(params).promise();
+    const data = await ddb.scan(params).promise();
     return data;
   } catch (err) {
     return {
@@ -29,11 +24,9 @@ async function getItem(itemId) {
   }
 }
 
-export const getProductById = async (event) => {
-  const { id } = event.pathParameters;
-  console.log("id:" + id);
+export const getStock = async (event) => {
   try {
-    const data = await getItem(id);
+    const data = await getItems();
     console.log(data);
     return {
       statusCode: 200,

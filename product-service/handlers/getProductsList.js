@@ -1,22 +1,44 @@
-import products from "../DB/products";
+var AWS = require("aws-sdk");
+
+var ddb = new AWS.DynamoDB({ apiVersion: "2012-08-10" });
+
+var params = {
+  TableName: process.env.TABLE_NAME,
+};
+
+async function getItems() {
+  if (!ddb) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ msg: "Connection Failed" }),
+    };
+  }
+  try {
+    const data = await ddb.scan(params).promise();
+
+    return data;
+  } catch (err) {
+    return JSON.stringify(err.message);
+  }
+}
 
 export const getProductsList = async (event) => {
   try {
-    if (!products) {
-      return {
-        statusCode: "404",
-        body: "Products are unavailiable",
-      };
-    }
+    const data = await getItems();
+    console.log(data);
     return {
       statusCode: 200,
       headers: {
+        "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Credentials": true,
+        "Access-Control-Allow-Methods": "*",
       },
-      body: JSON.stringify(products),
+      body: JSON.stringify(data),
     };
-  } catch (e) {
-    console.log(e);
+  } catch (err) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify(err.message),
+    };
   }
 };
