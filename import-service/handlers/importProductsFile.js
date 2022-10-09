@@ -1,6 +1,6 @@
 var AWS = require("aws-sdk");
 
-const s3 = new AWS.S3({ apiVersion: "2006-03-01" });
+const s3 = new AWS.S3();
 
 export const importProductsFile = async (event) => {
   const name = event.queryStringParameters.name;

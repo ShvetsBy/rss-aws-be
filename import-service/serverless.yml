@@ -19,7 +19,7 @@ provider:
         - arn:aws:s3:::jojech30qh/*
 custom:
   webpack:
-    includeModules: false
+    includeModules: true
 
 package:
   individually: true
@@ -41,7 +41,7 @@ functions:
               querystrings:
                 name: true
   importFileParser:
-    handler: importFileParser
+    handler: handler.importFileParser
     events:
       - s3:
           bucket: jojech30qh
