@@ -60,3 +60,5 @@ functions:
       - httpApi:
           path: /stock-products
           method: get
+  catalogBatchProcess:
+    handler: handler.catalogBatchProcess
