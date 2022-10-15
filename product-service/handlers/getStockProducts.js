@@ -30,8 +30,32 @@ export const getStockProducts = async (event) => {
   try {
     const products = await getItems(productParams);
     const stock = await getItems(stockParams);
-    const data = [...stock, products];
+    let productList = products.Items;
+    let stockList = stock.Items;
+
+    productList.forEach((el) => {
+      el.description = el.description.S;
+      el.id = el.id.S;
+      el.img = el.img.S;
+      el.price = el.price.N;
+      el.title = el.title.S;
+    });
+
+    stockList.forEach((el) => {
+      el.count = el.count.N;
+      el.product_id = el.product_id.S;
+    });
+    let data = [];
+    for (let i = 0; i < productList.length; i++) {
+      data.push({
+        ...productList[i],
+        ...stockList.find(
+          (itmInner) => itmInner.product_id === productList[i].id
+        ),
+      });
+    }
     console.log(data);
+
     return {
       statusCode: 200,
       headers: {

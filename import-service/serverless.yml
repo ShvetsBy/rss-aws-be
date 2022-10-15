@@ -1,0 +1,51 @@
+service: import-service
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: dev
+  region: eu-west-1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:ListBucket
+      Resource:
+        - arn:aws:s3:::jojech30qh
+    - Effect: Allow
+      Action:
+        - s3:*
+      Resource:
+        - arn:aws:s3:::jojech30qh/*
+custom:
+  webpack:
+    includeModules: true
+
+package:
+  individually: true
+
+plugins:
+  - serverless-webpack
+
+functions:
+  importProductsFile:
+    handler: handler.importProductsFile
+    environment:
+      BUCKET_NAME: jojech30qh
+    events:
+      - http:
+          path: /import
+          method: get
+          request:
+            parameters:
+              querystrings:
+                name: true
+  importFileParser:
+    handler: handler.importFileParser
+    events:
+      - s3:
+          bucket: jojech30qh
+          event: s3:ObjectCreated:*
+          rules:
+            - prefix: uploaded/
+          existing: true
