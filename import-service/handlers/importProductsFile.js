@@ -1,8 +1,7 @@
-var AWS = require("aws-sdk");
-
-const s3 = new AWS.S3();
+import AWS from "aws-sdk";
 
 export const importProductsFile = async (event) => {
+  const s3 = new AWS.S3();
   const name = event.queryStringParameters.name;
   const params = {
     Bucket: process.env.BUCKET_NAME,

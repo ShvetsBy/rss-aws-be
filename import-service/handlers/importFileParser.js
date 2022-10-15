@@ -13,6 +13,7 @@ export const importFileParser = async (event) => {
       const results = [];
 
       s3.getObject(params)
+
         .createReadStream()
         .pipe(csv())
         .on("data", (data) => results.push(data))
