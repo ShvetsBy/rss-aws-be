@@ -7,6 +7,23 @@ provider:
   stage: dev
   region: eu-west-1
 
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action: "sqs:*"
+      Resource:
+        - Fn::GetAtt: [ SQSQueue, Arn ]
+
+  environment:
+    SQS_URL:
+      Ref: SQSQueue
+
+resources:
+  Resources:
+    SQSQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: catalogItemsQueue
+
 custom:
   webpack:
     includeModules: false
@@ -62,3 +79,10 @@ functions:
           method: get
   catalogBatchProcess:
     handler: handler.catalogBatchProcess
+    events:
+      - sqs: 
+          batchSize: 5
+          arn: 
+            Fn::GetAtt: 
+              - SQSQueue
+              - Arn
