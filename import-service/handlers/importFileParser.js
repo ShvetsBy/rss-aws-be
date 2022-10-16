@@ -3,6 +3,7 @@ import csv from "csv-parser";
 
 export const importFileParser = async (event) => {
   const s3 = new AWS.S3();
+  const sqs = new AWS.SQS();
   try {
     for (const record of event.Records) {
       const key = record.s3.object.key;
@@ -13,10 +14,25 @@ export const importFileParser = async (event) => {
       const results = [];
 
       s3.getObject(params)
-
         .createReadStream()
         .pipe(csv())
-        .on("data", (data) => results.push(data))
+        .on("data", (data) => {
+          results.push(data);
+          sqs.sendMessage(
+            {
+              MessageBody: JSON.stringify(results),
+              QueueUrl:
+                "https://sqs.eu-west-1.amazonaws.com/203064053127/catalogItemsQueue",
+            },
+            (err, data) => {
+              if (err) {
+                console.error(err);
+                return;
+              }
+              console.log(data);
+            }
+          );
+        })
         .on("error", (error) => {
           reject(JSON.stringify(error));
         })
