@@ -17,6 +17,11 @@ provider:
         - s3:*
       Resource:
         - arn:aws:s3:::jojech30qh/*
+    - Effect: "Allow"
+      Action: "sqs:*"
+      Resource:
+        - arn:aws:sqs:eu-west-1:203064053127:catalogItemsQueue
+    
 custom:
   webpack:
     includeModules: true
