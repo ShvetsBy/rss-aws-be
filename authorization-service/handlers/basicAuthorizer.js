@@ -1,7 +1,10 @@
 export const basicAuthorizer = async (event, ctx, cb) => {
   console.log("Event: ", JSON.stringify(event));
   if (event["type" != "TOKEN"]) {
-    cb("unuthorized");
+    cb({
+      statusCode: 401,
+      body: JSON.stringify({ msg: "Auth header is not provided" }),
+    });
   }
   try {
     const authToken = event.authrizationToken;
@@ -18,7 +21,10 @@ export const basicAuthorizer = async (event, ctx, cb) => {
     const policy = generatePolicy(codedCredentials, event.methodARN, effect);
     cd(null, policy);
   } catch (e) {
-    cb(`unuthorized: ${e.message} `);
+    cb({
+      statusCode: 401,
+      body: JSON.stringify({ msg: e.message }),
+    });
   }
 };
 
