@@ -7,19 +7,17 @@ export const basicAuthorizer = async (event, ctx, cb) => {
     });
   }
   try {
-    const authToken = event.authrizationToken;
+    const authToken = event.authorizationToken;
     const codedCredentials = authToken.split(" ")[1];
-    //const codedCredentials = authToken;
     const decodedCredentials = Buffer.from(codedCredentials, "base64");
     const credentials = decodedCredentials.toString("utf-8").split(":");
     const login = credentials[0];
     const password = credentials[1];
-    console.log("login: " + login + "; Password: " + password);
     const localPassword = process.env[login];
     const effect =
-      !localPassword || password != localPassword ? "Deny" : "Allow";
-    const policy = generatePolicy(codedCredentials, event.methodARN, effect);
-    cd(null, policy);
+      !localPassword || password !== localPassword ? "Deny" : "Allow";
+    const policy = generatePolicy(codedCredentials, event.methodArn, effect);
+    cb(null, policy);
   } catch (e) {
     cb({
       statusCode: 401,
