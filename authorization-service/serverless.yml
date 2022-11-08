@@ -1,0 +1,40 @@
+service: authorization-service
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: dev
+  region: eu-west-1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:ListBucket
+      Resource:
+        - arn:aws:s3:::jojech30qh
+    - Effect: Allow
+      Action:
+        - s3:*
+      Resource:
+        - arn:aws:s3:::jojech30qh/*
+    - Effect: "Allow"
+      Action: "sqs:*"
+      Resource:
+        - arn:aws:sqs:eu-west-1:203064053127:catalogItemsQueue
+    
+custom:
+  webpack:
+    includeModules: true
+
+package:
+  individually: true
+
+plugins:
+  - serverless-webpack
+  - serverless-dotenv-plugin
+
+
+functions:
+  basicAuthorizer:
+    handler: handler.basicAuthorizer
+
