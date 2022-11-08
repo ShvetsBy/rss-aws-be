@@ -5,7 +5,14 @@
 		},
 		{
 			"path": "../shop-react-redux-cloudfront"
+		},
+		{
+			"path": "../rs-cart-api"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"workbench.colorTheme": "Default Dark+",
+		"workbench.preferredDarkColorTheme": "Default Dark+",
+		"workbench.preferredHighContrastColorTheme": "Abyss"
+	}
 }

@@ -17,6 +17,7 @@ export const basicAuthorizer = async (event, ctx, cb) => {
     const effect =
       !localPassword || password !== localPassword ? "Deny" : "Allow";
     const policy = generatePolicy(codedCredentials, event.methodArn, effect);
+
     cb(null, policy);
   } catch (e) {
     cb({
