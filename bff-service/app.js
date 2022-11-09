@@ -4,7 +4,7 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var axios = require("axios");
-
+require("dotenv").config();
 // var indexRouter = require("./routes/index");
 // var usersRouter = require("./routes/users");
 
@@ -17,8 +17,19 @@ app.set("view engine", "pug");
 app.use(logger("dev"));
 app.use(express.json());
 app.all("/*", (req, res) => {
-  console.log(req);
-  res.send(req.originalUrl);
+  const APISelector = req.originalUrl.split("/")[1];
+  const APIurl = process.env[APISelector];
+  console.log({ APIurl });
+  if (APIurl) {
+    const axiosConfig = {
+      method: "get",
+      url: APIurl,
+    };
+
+    axios(axiosConfig).then((response) => res.json(response.data));
+  } else {
+    res.status(502).send("Cannot process request");
+  }
 });
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
