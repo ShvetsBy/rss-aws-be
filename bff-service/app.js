@@ -19,13 +19,13 @@ app.use(express.json());
 app.all("/*", (req, res) => {
   const APISelector = req.originalUrl.split("/")[1];
   const APIurl = process.env[APISelector];
-  console.log({ APIurl });
+
   if (APIurl) {
     const axiosConfig = {
-      method: "get",
-      url: APIurl,
+      method: req.method,
+      url: APIurl + req.originalUrl,
+      ...(Object.keys(req.body || {}).length > 0 && { data: req.body }),
     };
-
     axios(axiosConfig).then((response) => res.json(response.data));
   } else {
     res.status(502).send("Cannot process request");
