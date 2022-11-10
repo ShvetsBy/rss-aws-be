@@ -19,7 +19,7 @@ app.use(express.json());
 app.all("/*", (req, res) => {
   const APISelector = req.originalUrl.split("/")[1];
   const APIurl = process.env[APISelector];
-
+  console.log(APIurl + req.originalUrl);
   if (APIurl) {
     const axiosConfig = {
       method: req.method,
