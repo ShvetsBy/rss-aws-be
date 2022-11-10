@@ -7,6 +7,9 @@ var axios = require("axios");
 require("dotenv").config();
 // var indexRouter = require("./routes/index");
 // var usersRouter = require("./routes/users");
+const nodecache = require("node-cache");
+
+const appCache = new nodecache({ stdTTL: 120 });
 
 var app = express();
 
@@ -26,7 +29,18 @@ app.all("/*", (req, res) => {
       url: APIurl + req.originalUrl,
       ...(Object.keys(req.body || {}).length > 0 && { data: req.body }),
     };
-    axios(axiosConfig).then((response) => res.json(response.data));
+    axios(axiosConfig).then((response) => {
+      if (req.method === "GET") {
+        //console.log("method: " + req.method);
+        if (appCache.has(APISelector)) {
+          console.log(appCache.get(APISelector));
+          return res.json(appCache.get(APISelector));
+        } else {
+          appCache.set(APISelector, response.data);
+          res.json(response.data);
+        }
+      } else res.json(response.data);
+    });
   } else {
     res.status(502).send("Cannot process request");
   }
