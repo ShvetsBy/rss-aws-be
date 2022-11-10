@@ -31,9 +31,7 @@ app.all("/*", (req, res) => {
     };
     axios(axiosConfig).then((response) => {
       if (req.method === "GET") {
-        //console.log("method: " + req.method);
         if (appCache.has(APISelector)) {
-          console.log(appCache.get(APISelector));
           return res.json(appCache.get(APISelector));
         } else {
           appCache.set(APISelector, response.data);
