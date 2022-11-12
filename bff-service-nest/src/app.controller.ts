@@ -1,12 +1,12 @@
-import { Controller, Get } from '@nestjs/common';
+import { All, Controller, Req, Res } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @All('/*')
+  handleRoutes(@Req() req, @Res() res) {
+    return this.appService.handleRoutes(req, res);
   }
 }
