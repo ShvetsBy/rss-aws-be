@@ -3,6 +3,7 @@ import AWS from "aws-sdk";
 export const importProductsFile = async (event) => {
   const s3 = new AWS.S3();
   const name = event.queryStringParameters.name;
+  console.log(name);
   const params = {
     Bucket: process.env.BUCKET_NAME,
     Key: `uploaded/${name}`,
@@ -15,7 +16,11 @@ export const importProductsFile = async (event) => {
     return {
       statusCode: 200,
       headers: {
-        "access-control-allow-origin": "*",
+        "Content-Type": "text/csv",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "*",
+        "Access-Control-Allow-Credentials": true,
+        "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
       },
       body: JSON.stringify({ url: `${signedUrl}` }),
     };

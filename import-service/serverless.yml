@@ -41,6 +41,7 @@ functions:
       - http:
           path: /import
           method: get
+          cors: true
           request:
             parameters:
               querystrings:
