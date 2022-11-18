@@ -16,11 +16,8 @@ export const importProductsFile = async (event) => {
     return {
       statusCode: 200,
       headers: {
-        "Content-Type": "text/csv",
         "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Headers": "*",
         "Access-Control-Allow-Credentials": true,
-        "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
       },
       body: JSON.stringify({ url: `${signedUrl}` }),
     };

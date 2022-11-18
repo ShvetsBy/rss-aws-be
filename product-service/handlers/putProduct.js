@@ -1,9 +1,8 @@
 var AWS = require("aws-sdk");
 var uuid = require("uuid");
 
-var ddb = new AWS.DynamoDB({ apiVersion: "2012-08-10" });
-
 export const putProduct = async (event) => {
+  var ddb = new AWS.DynamoDB({ apiVersion: "2012-08-10" });
   if (!ddb) {
     return {
       statusCode: 500,
@@ -12,7 +11,6 @@ export const putProduct = async (event) => {
   }
   try {
     const body = JSON.parse(event.body);
-    console.log(body);
     const { count, ...rest } = body;
 
     const id = uuid.v4();

@@ -1,5 +1,5 @@
 import AWS from "aws-sdk";
-import { putProduct } from "./putProduct";
+import axios from "axios";
 
 export const catalogBatchProcess = async (event) => {
   const products = event.Records.map(({ body }) => body);
@@ -7,7 +7,14 @@ export const catalogBatchProcess = async (event) => {
   try {
     const sns = new AWS.SNS();
     for (const product of products) {
-      await putProduct(product);
+      console.log("Product:");
+      console.log(product);
+
+      await axios.post(
+        "https://h4uuydbl93.execute-api.eu-west-1.amazonaws.com/products",
+        JSON.parse(product)
+      );
+
       await sns
         .publish(
           {

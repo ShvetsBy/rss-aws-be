@@ -12,26 +12,37 @@ export const importFileParser = async (event) => {
         Key: key,
       };
       const results = [];
-
+      const StringToObj = (str) => {
+        const obj = {};
+        obj[str.split(":")[0]] = str.split(":")[1];
+        return obj;
+      };
       s3.getObject(params)
         .createReadStream()
-        .pipe(csv())
+        .pipe(csv(["title", "description", "price", "img", "count"]))
         .on("data", (data) => {
+          data.title = StringToObj(data.title);
+          data.description = StringToObj(data.description);
+          data.price = StringToObj(data.price);
+          data.img = StringToObj(data.img);
+          data.count = StringToObj(data.count);
           results.push(data);
-          sqs.sendMessage(
-            {
-              MessageBody: JSON.stringify(results),
-              QueueUrl:
-                "https://sqs.eu-west-1.amazonaws.com/203064053127/catalogItemsQueue",
-            },
-            (err, data) => {
-              if (err) {
-                console.error(err);
-                return;
+          results.forEach((el) => {
+            sqs.sendMessage(
+              {
+                MessageBody: JSON.stringify(el),
+                QueueUrl:
+                  "https://sqs.eu-west-1.amazonaws.com/203064053127/catalogItemsQueue",
+              },
+              (err, data) => {
+                if (err) {
+                  console.error(err);
+                  return;
+                }
+                console.log(data);
               }
-              console.log(data);
-            }
-          );
+            );
+          });
         })
         .on("error", (error) => {
           reject(JSON.stringify(error));
