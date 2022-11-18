@@ -27,22 +27,21 @@ export const importFileParser = async (event) => {
           data.img = StringToObj(data.img);
           data.count = StringToObj(data.count);
           results.push(data);
-          results.forEach((el) => {
-            sqs.sendMessage(
-              {
-                MessageBody: JSON.stringify(el),
-                QueueUrl:
-                  "https://sqs.eu-west-1.amazonaws.com/203064053127/catalogItemsQueue",
-              },
-              (err, data) => {
-                if (err) {
-                  console.error(err);
-                  return;
-                }
-                console.log(data);
+
+          sqs.sendMessage(
+            {
+              MessageBody: JSON.stringify(data),
+              QueueUrl:
+                "https://sqs.eu-west-1.amazonaws.com/203064053127/catalogItemsQueue",
+            },
+            (err, data) => {
+              if (err) {
+                console.error(err);
+                return;
               }
-            );
-          });
+              console.log(data);
+            }
+          );
         })
         .on("error", (error) => {
           reject(JSON.stringify(error));
