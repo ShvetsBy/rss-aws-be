@@ -1,6 +1,9 @@
 var AWS = require("aws-sdk");
 
-var ddb = new AWS.DynamoDB({ apiVersion: "2012-08-10" });
+var ddb = new AWS.DynamoDB({
+  region: "eu-west-1",
+  apiVersion: "2012-08-10",
+});
 
 async function getItem(itemId) {
   if (!ddb) {
@@ -12,7 +15,7 @@ async function getItem(itemId) {
 
   try {
     var params = {
-      TableName: process.env.TABLE_NAME,
+      TableName: process.env.TABLE_NAME || "products",
       KeyConditionExpression: "id = :id",
       ExpressionAttributeValues: {
         ":id": { S: itemId },
