@@ -1,9 +1,12 @@
 var AWS = require("aws-sdk");
 
-var ddb = new AWS.DynamoDB({ apiVersion: "2012-08-10" });
+var ddb = new AWS.DynamoDB({
+  region: "eu-west-1",
+  apiVersion: "2012-08-10",
+});
 
 var params = {
-  TableName: process.env.TABLE_NAME,
+  TableName: process.env.TABLE_NAME || "products",
 };
 
 async function getItems() {
@@ -15,7 +18,6 @@ async function getItems() {
   }
   try {
     const data = await ddb.scan(params).promise();
-
     return data;
   } catch (err) {
     return JSON.stringify(err.message);
